@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 
 class Main {
     private static final Scanner in = new Scanner(System.in);
+    private static ComplexMatrix lastResult = null;
 
     public static void main(String[] args) {
         in.useLocale(Locale.US);
@@ -24,36 +25,34 @@ class Main {
                         return;
                     }
                     case 1: {
-                        System.out.println("Первая матрица: ");
-                        ComplexMatrix a = readMatrix();
-                        System.out.println("Вторая матрица: ");
-                        ComplexMatrix b = readMatrix();
-                        System.out.println("Сумма двух матриц: " + "\n" + a.add(b));
+                        ComplexMatrix a = chooseMatrix("Первая матрица:");
+                        ComplexMatrix b = chooseMatrix("Вторая матрица:");
+                        lastResult = a.add(b);
+                        System.out.println("Сумма двух матриц:\n" + lastResult);
                         break;
                     }
                     case 2: {
-                        System.out.println("Первая матрица: ");
-                        ComplexMatrix a = readMatrix();
-                        System.out.println("Вторая матрица: ");
-                        ComplexMatrix b = readMatrix();
-                        System.out.println("Произведение двух матриц:\n" + a.multiply(b));
+                        ComplexMatrix a = chooseMatrix("Первая матрица:");
+                        ComplexMatrix b = chooseMatrix("Вторая матрица:");
+                        lastResult = a.multiply(b);
+                        System.out.println("Произведение двух матриц:\n" + lastResult);
                         break;
                     }
                     case 3: {
-                        System.out.println("Первая матрица: ");
-                        ComplexMatrix a = readMatrix();
-                        System.out.println("Вторая матрица: ");
-                        ComplexMatrix b = readMatrix();
-                        System.out.println("Частное двух матриц:\n" + a.divide(b));
+                        ComplexMatrix a = chooseMatrix("Первая матрица:");
+                        ComplexMatrix b = chooseMatrix("Вторая матрица:");
+                        lastResult = a.divide(b);
+                        System.out.println("Частное двух матриц:\n" + lastResult);
                         break;
                     }
                     case 4: {
-                        ComplexMatrix a = readMatrix();
-                        System.out.println("Транспонированная матрица:\n" + a.transpose());
+                        ComplexMatrix a = chooseMatrix("Матрица:");
+                        lastResult = a.transpose();
+                        System.out.println("Транспонированная матрица:\n" + lastResult);
                         break;
                     }
                     case 5: {
-                        ComplexMatrix a = readMatrix();
+                        ComplexMatrix a = chooseMatrix("Матрица:");
                         System.out.println("Определитель: " + a.determinant());
                         break;
                     }
@@ -88,5 +87,22 @@ class Main {
             }
         }
         return m;
+    }
+
+    private static ComplexMatrix chooseMatrix(String title){
+        System.out.println(title);
+        if(lastResult == null) {
+            return readMatrix();
+        }else{
+            System.out.println("1 - ввести новую матрицу");
+            System.out.println("2 - использовать последний результат");
+            System.out.print("> ");
+            int choice = in.nextInt();
+            if(choice == 2){
+                System.out.println("Используется:\n" + lastResult);
+                return lastResult;
+            }
+            return readMatrix();
+        }
     }
 }
